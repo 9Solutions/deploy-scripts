@@ -12,6 +12,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
 
   app:
     build: .
@@ -21,9 +22,10 @@ services:
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/db_9solutions
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/db_9solutions
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: urubu100
+    restart: unless-stopped
 
 volumes:
   mysql_data:
