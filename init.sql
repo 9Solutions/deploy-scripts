@@ -315,7 +315,7 @@ INNER JOIN status_pedido ON pedido.fk_status_pedido = status_pedido.id_status_pe
 INNER JOIn doador ON pedido.fk_doador = doador.id_doador;
 
 ALTER TABLE caixa 
-ADD COLUMN qrCodeToken CHAR(64) NULL;
+ADD COLUMN qr_code_token CHAR(64) NULL;
 
 DELIMITER //
 
@@ -323,8 +323,8 @@ CREATE TRIGGER set_default_qrcode_token
 BEFORE INSERT ON caixa
 FOR EACH ROW
 BEGIN
-    IF NEW.qrCodeToken IS NULL THEN
-        SET NEW.qrCodeToken = SHA2(UNIX_TIMESTAMP(), 256);
+    IF NEW.qr_code_token IS NULL THEN
+        SET NEW.qr_code_token = SHA2(UNIX_TIMESTAMP(), 256);
     END IF;
 END //
 
