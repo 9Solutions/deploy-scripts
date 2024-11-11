@@ -1,0 +1,24 @@
+# Use a base image with Python 3.11
+FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y \
+    git \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libxrender1 \
+    libxext6 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory in the container
+WORKDIR /app
+
+COPY entrypoint.python.sh /app/entrypoint.python.sh
+RUN chmod +x /app/entrypoint.python.sh
+
+# Define as variáveis de ambiente para o repositório Git e o branch
+ENV GIT_REPO=https://github.com/9Solutions/Servico-Face-Blur.git
+ENV GIT_BRANCH=main
+
+# Comando para rodar a aplicação Spring Boot
+CMD ["/app/entrypoint.python.sh"]

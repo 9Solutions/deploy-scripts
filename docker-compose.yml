@@ -14,6 +14,15 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     restart: unless-stopped
 
+  python-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    container_name: python-container
+    ports:
+      - "5520:5520"
+    restart: unless-stopped
+
   app:
     build: .
     container_name: spring-boot-container
@@ -21,11 +30,15 @@ services:
       - "8080:8080"
     depends_on:
       - db
+      - python-app
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/db_9solutions
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: urubu100
+      SOLUTIONS_API_URL: http://python-app:5520/upload
     restart: unless-stopped
+
 
 volumes:
   mysql_data:
+
